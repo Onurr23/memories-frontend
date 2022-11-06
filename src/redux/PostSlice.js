@@ -1,14 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   posts: [],
   isLoading: false,
   error: false,
-  errorMessage: "",
+  errorMessage: '',
 };
 
 export const postSlice = createSlice({
-  name: "posts",
+  name: 'posts',
   initialState,
   reducers: {
     getPosts: (state, data) => {
@@ -17,8 +17,17 @@ export const postSlice = createSlice({
     createPost: (state, data) => {
       state.posts = [...state.posts, data.payload];
     },
+    updatePost: (state, data) => {
+      state.updatedPost = data.payload;
+    },
+    deletePost: (state, data) => {
+      state.deletedPost = data.payload;
+    },
     setLoading: (state, data) => {
       state.isLoading = data.payload;
+    },
+    setCurrentPost: (state, data) => {
+      state.currentPost = data.payload;
     },
   },
 });

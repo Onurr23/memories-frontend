@@ -1,28 +1,37 @@
-import React, { useEffect } from "react";
-import { Container, AppBar, Typography, Grid, Grow } from "@material-ui/core";
-import memories from "./images/memories.png";
-import Form from "./components/Form/Form";
-import Posts from "./components/Posts/Posts";
-import useStyles from "./styles";
-import { useDispatch } from "react-redux";
-import { fetchPosts } from "./api";
-import { postActions } from "./redux/PostSlice";
-import "./index.css";
+import React, { useEffect, useState } from 'react';
+import {
+  Container,
+  AppBar,
+  Typography,
+  Grid,
+  Grow,
+  CircularProgress,
+} from '@material-ui/core';
+import memories from './images/memories.png';
+import Form from './components/Form/Form';
+import Posts from './components/Posts/Posts';
+import useStyles from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from './api';
+import { postActions } from './redux/PostSlice';
+import './index.css';
 
 const App = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const updatedPost = useSelector((state) => state.posts.updatedPost);
+  const deletedPost = useSelector((state) => state.posts.deletedPost);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getAllPosts();
-  }, []);
+  }, [dispatch, updatedPost, deletedPost]);
 
   const getAllPosts = async () => {
-    dispatch(postActions.setLoading(true));
     await fetchPosts()
       .then((response) => dispatch(postActions.getPosts(response.data)))
       .catch((err) => console.log(err));
-    dispatch(postActions.setLoading(false));
+    setLoading(false);
   };
 
   return (
@@ -47,7 +56,7 @@ const App = () => {
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Posts />
+              {loading ? <CircularProgress /> : <Posts />}
             </Grid>
             <Grid item xs={12} sm={4}>
               <Form />
