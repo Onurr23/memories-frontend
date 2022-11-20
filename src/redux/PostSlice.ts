@@ -1,10 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export interface Post {
+  _id?: string;
+  title: string;
+  message: string;
+  creator: string;
+  tags: string[];
+  selectedFile: string;
+  likeCount?: any;
+  createdAt?: any;
+}
+
+interface PostContext {
+  posts: Post[];
+  isLoading: boolean;
+  error: boolean;
+  errorMessage: string;
+  updatedPost?: Post;
+  deletedPost?: Post;
+  currentPost?: Post;
+}
+
+const initialState: PostContext = {
   posts: [],
   isLoading: false,
   error: false,
-  errorMessage: '',
+  errorMessage: ''
 };
 
 export const postSlice = createSlice({
@@ -28,8 +49,8 @@ export const postSlice = createSlice({
     },
     setCurrentPost: (state, data) => {
       state.currentPost = data.payload;
-    },
-  },
+    }
+  }
 });
 
 export const postActions = postSlice.actions;
